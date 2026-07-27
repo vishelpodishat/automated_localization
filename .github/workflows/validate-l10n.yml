@@ -1,0 +1,27 @@
+name: Validate localization
+
+on:
+  pull_request:
+    paths:
+      - "lib/src/l10n/localization/**/*.arb"
+  push:
+    branches: [main]
+    paths:
+      - "lib/src/l10n/localization/**/*.arb"
+
+jobs:
+  validate_arb:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dart-lang/setup-dart@v1
+      - name: Проверить консистентность ARB (ключи, плейсхолдеры, HTML)
+        run: dart run lib/tool/validate_arb.dart lib/src/l10n/localization ru
+
+  validate_plurals:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dart-lang/setup-dart@v1
+      - name: Проверить формы plural по CLDR
+        run: dart run lib/tool/validate_plurals.dart lib/src/l10n/localization
