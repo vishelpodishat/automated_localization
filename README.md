@@ -2,6 +2,11 @@
 
 A new Flutter project.
 
+## Documentation
+
+- [Localization guide for developers](docs/LOCALIZATION_DEVELOPERS.md)
+- [Localization guide for translators](docs/LOCALIZATION_TRANSLATORS.md)
+
 ## Publish localizations
 
 Translations are published through GitHub Actions:
