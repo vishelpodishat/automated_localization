@@ -7,5 +7,11 @@
   "user": "User one",
   "@user": {
     "description": "тест на юзера"
-  }
+  },
+  "newChanges": "Protection",
+  "@newChanges": {
+    "description": "новый"
+  },
+  "changes": "changes",
+  "@changes": {}
 }

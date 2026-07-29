@@ -4,5 +4,5 @@ library;
 
 export 'package:flutter_localizations/flutter_localizations.dart';
 
-export 'src/generated/localization/localization/localization_localization.dart';
-export 'src/generated/localization/locales.dart';
+export 'src/generated/localization/localization_localization.dart';
+export 'src/generated/locales.dart';

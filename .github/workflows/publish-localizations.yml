@@ -58,8 +58,8 @@ jobs:
             --credentials="$GOOGLE_CREDENTIALS_PATH" \
             --sheet="$LOCALIZATION_SHEET_ID" \
             --lib=lib \
-            --arb=src/l10n/localization \
-            --gen=src/generated/localization \
+            --arb=src/l10n \
+            --gen=src/generated \
             --prefix=app \
             --no-last-modified \
             --format

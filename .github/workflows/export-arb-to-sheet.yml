@@ -1,0 +1,68 @@
+name: Export ARB to Google Sheet
+
+on:
+  workflow_dispatch:
+    inputs:
+      apply:
+        description: "Write missing ARB keys to Google Sheet"
+        required: true
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+env:
+  ARB_DIR: lib/src/l10n/localization
+  BASE_LOCALE: ru
+  GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
+  GOOGLE_CREDENTIALS_PATH: ${{ runner.temp }}/google-service-account.json
+  LOCALIZATION_SHEET_ID: ${{ secrets.LOCALIZATION_SHEET_ID }}
+
+jobs:
+  export:
+    name: Export missing keys
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Preflight
+        run: |
+          test -n "$GOOGLE_SERVICE_ACCOUNT_JSON" || { echo "::error::Missing GOOGLE_SERVICE_ACCOUNT_JSON secret"; exit 1; }
+          test -n "$LOCALIZATION_SHEET_ID" || { echo "::error::Missing LOCALIZATION_SHEET_ID secret"; exit 1; }
+
+      - uses: dart-lang/setup-dart@v1
+        with:
+          sdk: stable
+
+      - name: Validate ARB consistency
+        run: dart run lib/tool/validate_arb.dart "$ARB_DIR" "$BASE_LOCALE"
+
+      - name: Validate plural forms
+        run: dart run lib/tool/validate_plurals.dart "$ARB_DIR"
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: lib/tool/requirements-l10n.txt
+
+      - name: Install dependencies
+        run: python -m pip install -r lib/tool/requirements-l10n.txt
+
+      - name: Prepare Google credentials
+        run: printf '%s' "$GOOGLE_SERVICE_ACCOUNT_JSON" > "$GOOGLE_CREDENTIALS_PATH"
+
+      - name: Export missing ARB keys
+        shell: bash
+        run: |
+          args=()
+          if [[ "${{ inputs.apply }}" == "true" ]]; then
+            args+=(--apply)
+          fi
+          python lib/tool/export_arb_to_sheet.py \
+            --credentials="$GOOGLE_CREDENTIALS_PATH" \
+            --sheet="$LOCALIZATION_SHEET_ID" \
+            --arb-root=lib/src/l10n \
+            "${args[@]}"

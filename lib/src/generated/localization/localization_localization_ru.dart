@@ -12,4 +12,13 @@ class LocalizationLocalizationRu extends LocalizationLocalization {
 
   @override
   String get welcomeMessage => 'Добро пожаловать!';
+
+  @override
+  String get user => 'Юзер одиг';
+
+  @override
+  String get newChanges => 'Защита';
+
+  @override
+  String get changes => 'изменения';
 }

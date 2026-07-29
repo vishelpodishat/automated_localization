@@ -12,4 +12,13 @@ class LocalizationLocalizationKk extends LocalizationLocalization {
 
   @override
   String get welcomeMessage => 'Қош келдіңіз!';
+
+  @override
+  String get user => 'Юзер бірінші';
+
+  @override
+  String get newChanges => 'Бір сөз';
+
+  @override
+  String get changes => 'ауысу';
 }

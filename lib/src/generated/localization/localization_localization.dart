@@ -109,6 +109,24 @@ abstract class LocalizationLocalization {
   /// In en, this message translates to:
   /// **'Welcome!'**
   String get welcomeMessage;
+
+  /// тест на юзера
+  ///
+  /// In en, this message translates to:
+  /// **'User one'**
+  String get user;
+
+  /// новый
+  ///
+  /// In en, this message translates to:
+  /// **'Protection'**
+  String get newChanges;
+
+  /// No description provided for @changes.
+  ///
+  /// In en, this message translates to:
+  /// **'changes'**
+  String get changes;
 }
 
 class _LocalizationLocalizationDelegate

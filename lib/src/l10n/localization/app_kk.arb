@@ -7,5 +7,11 @@
   "user": "Юзер бірінші",
   "@user": {
     "description": "тест на юзера"
-  }
+  },
+  "newChanges": "Бір сөз",
+  "@newChanges": {
+    "description": "новый"
+  },
+  "changes": "ауысу",
+  "@changes": {}
 }

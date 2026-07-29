@@ -33,6 +33,19 @@ workflow generates localization files from Google Sheet, uploads the generated
 diff as an artifact, waits for the `production` environment approval, and then
 publishes a Shorebird Android patch.
 
+Google Sheet remains the source of truth. Prefer adding and editing keys in the
+sheet. If a developer creates a key in ARB first, run the `Export ARB to Google
+Sheet` workflow before `Publish localizations`:
+
+1. Run it with `apply` disabled and inspect the proposed additions in the log.
+2. Run it again with `apply` enabled to append missing keys.
+3. Run `Publish localizations` to regenerate ARB and Dart files from the sheet.
+
+The export workflow never overwrites non-empty Sheet values. It only appends
+missing keys, adds missing locale columns, and fills empty translation cells.
+The Google service account must have `Editor` access to the spreadsheet for
+this workflow; `Viewer` access is enough only for localization generation.
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.

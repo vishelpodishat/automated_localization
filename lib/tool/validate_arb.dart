@@ -1,4 +1,5 @@
 // validate_arb.dart
+// ignore_for_file: avoid_print
 //
 // Проверяет консистентность ARB-файлов локализации:
 //   1. Каждый файл — валидный JSON

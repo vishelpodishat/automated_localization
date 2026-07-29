@@ -12,4 +12,13 @@ class LocalizationLocalizationEn extends LocalizationLocalization {
 
   @override
   String get welcomeMessage => 'Welcome!';
+
+  @override
+  String get user => 'User one';
+
+  @override
+  String get newChanges => 'Protection';
+
+  @override
+  String get changes => 'changes';
 }

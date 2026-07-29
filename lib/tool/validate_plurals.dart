@@ -1,4 +1,5 @@
 // validate_plurals.dart
+// ignore_for_file: avoid_print
 //
 // Проверяет, что во всех ARB-файлах локализации корректно заполнены
 // формы множественного числа (ICU plural categories: zero/one/two/few/many/other)
