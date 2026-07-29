@@ -46,6 +46,23 @@ missing keys, adds missing locale columns, and fills empty translation cells.
 The Google service account must have `Editor` access to the spreadsheet for
 this workflow; `Viewer` access is enough only for localization generation.
 
+## Merge protection
+
+The `Validate localization` workflow runs on every pull request and reports
+three checks:
+
+```text
+ARB consistency
+Plural forms
+Flutter checks
+```
+
+To block merging when one of them fails, create an active branch ruleset for
+`main` in GitHub under `Settings -> Rules -> Rulesets`. Enable `Require a pull
+request before merging` and `Require status checks to pass before merging`,
+then add all three checks above. Enable `Require branches to be up to date
+before merging` if every pull request must be tested against the latest `main`.
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.

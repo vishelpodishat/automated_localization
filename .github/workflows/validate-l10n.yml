@@ -3,15 +3,19 @@ name: Validate localization
 on:
   workflow_dispatch: {}
   pull_request:
-    paths:
-      - "lib/src/l10n/localization/**/*.arb"
   push:
     branches: [main]
-    paths:
-      - "lib/src/l10n/localization/**/*.arb"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: validate-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
   validate_arb:
+    name: ARB consistency
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -20,9 +24,28 @@ jobs:
         run: dart run lib/tool/validate_arb.dart lib/src/l10n/localization ru
 
   validate_plurals:
+    name: Plural forms
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: dart-lang/setup-dart@v1
       - name: Проверить формы plural по CLDR
         run: dart run lib/tool/validate_plurals.dart lib/src/l10n/localization
+
+  flutter_checks:
+    name: Flutter checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+      - name: Install dependencies
+        run: flutter pub get
+      - name: Format check
+        run: dart format --output=none --set-exit-if-changed lib test
+      - name: Analyze
+        run: flutter analyze
+      - name: Test
+        run: flutter test
