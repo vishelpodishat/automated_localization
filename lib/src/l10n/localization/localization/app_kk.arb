@@ -1,0 +1,11 @@
+{
+  "@@locale": "kk",
+  "welcomeMessage": "Қош келдіңіз!",
+  "@welcomeMessage": {
+    "description": "Приветствие на главном экране"
+  },
+  "user": "Юзер бірінші",
+  "@user": {
+    "description": "тест на юзера"
+  }
+}

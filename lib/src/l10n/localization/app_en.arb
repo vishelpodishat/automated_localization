@@ -1,4 +1,0 @@
-{
-  "welcomeMessage": "Welcome, {userName}!",
-  "itemCount": "{count, plural, one{{count} item} other{{count} items}}"
-}

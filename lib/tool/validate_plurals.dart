@@ -25,12 +25,19 @@ const Map<String, Set<String>> requiredCategories = {
 };
 
 const List<String> allKnownCategories = [
-  'zero', 'one', 'two', 'few', 'many', 'other',
+  'zero',
+  'one',
+  'two',
+  'few',
+  'many',
+  'other',
 ];
 
 void main(List<String> args) {
   if (args.isEmpty) {
-    stderr.writeln('Использование: dart run validate_plurals.dart <папка с .arb>');
+    stderr.writeln(
+      'Использование: dart run validate_plurals.dart <папка с .arb>',
+    );
     exit(1);
   }
 
@@ -40,12 +47,13 @@ void main(List<String> args) {
     exit(1);
   }
 
-  final arbFiles = dir
-      .listSync()
-      .whereType<File>()
-      .where((f) => f.path.endsWith('.arb'))
-      .toList()
-    ..sort((a, b) => a.path.compareTo(b.path));
+  final arbFiles =
+      dir
+          .listSync()
+          .whereType<File>()
+          .where((f) => f.path.endsWith('.arb'))
+          .toList()
+        ..sort((a, b) => a.path.compareTo(b.path));
 
   if (arbFiles.isEmpty) {
     stderr.writeln('В папке ${args[0]} не найдено ни одного .arb файла');
@@ -73,7 +81,9 @@ void main(List<String> args) {
 
       final categories = _extractPluralCategories(value);
       if (categories == null) {
-        print('⚠️  $locale/$key: не удалось разобрать plural-конструкцию — проверьте вручную');
+        print(
+          '⚠️  $locale/$key: не удалось разобрать plural-конструкцию — проверьте вручную',
+        );
         continue;
       }
 
@@ -86,16 +96,20 @@ void main(List<String> args) {
       if (required != null) {
         final missing = required.difference(categories);
         if (missing.isNotEmpty) {
-          print('❌ $locale/$key: не хватает форм множественного числа '
-              'для языка "$locale": ${missing.join(", ")}');
+          print(
+            '❌ $locale/$key: не хватает форм множественного числа '
+            'для языка "$locale": ${missing.join(", ")}',
+          );
           hasErrors = true;
         }
       }
 
       final unknown = categories.difference(allKnownCategories.toSet());
       if (unknown.isNotEmpty) {
-        print('⚠️  $locale/$key: неизвестные категории (возможна опечатка): '
-            '${unknown.join(", ")}');
+        print(
+          '⚠️  $locale/$key: неизвестные категории (возможна опечатка): '
+          '${unknown.join(", ")}',
+        );
       }
     }
   }

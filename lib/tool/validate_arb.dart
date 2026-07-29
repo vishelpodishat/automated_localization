@@ -17,7 +17,9 @@ import 'dart:io';
 
 void main(List<String> args) {
   if (args.isEmpty) {
-    stderr.writeln('Использование: dart run validate_arb.dart <папка с .arb> [base_locale]');
+    stderr.writeln(
+      'Использование: dart run validate_arb.dart <папка с .arb> [base_locale]',
+    );
     exit(1);
   }
 
@@ -28,12 +30,13 @@ void main(List<String> args) {
   }
   final baseLocale = args.length > 1 ? args[1] : 'ru';
 
-  final arbFiles = dir
-      .listSync()
-      .whereType<File>()
-      .where((f) => f.path.endsWith('.arb'))
-      .toList()
-    ..sort((a, b) => a.path.compareTo(b.path));
+  final arbFiles =
+      dir
+          .listSync()
+          .whereType<File>()
+          .where((f) => f.path.endsWith('.arb'))
+          .toList()
+        ..sort((a, b) => a.path.compareTo(b.path));
 
   if (arbFiles.isEmpty) {
     stderr.writeln('В папке ${args[0]} не найдено ни одного .arb файла');
@@ -47,7 +50,8 @@ void main(List<String> args) {
   for (final file in arbFiles) {
     final locale = _localeFromFileName(file.path);
     try {
-      parsed[locale] = jsonDecode(file.readAsStringSync()) as Map<String, dynamic>;
+      parsed[locale] =
+          jsonDecode(file.readAsStringSync()) as Map<String, dynamic>;
     } catch (e) {
       print('❌ ${file.path}: некорректный JSON ($e)');
       hasErrors = true;
@@ -59,9 +63,12 @@ void main(List<String> args) {
     exit(1);
   }
 
-  final baseKeys = parsed[baseLocale]!.keys.where((k) => !k.startsWith('@')).toSet();
+  final baseKeys = parsed[baseLocale]!.keys
+      .where((k) => !k.startsWith('@'))
+      .toSet();
   final basePlaceholders = <String, Set<String>>{
-    for (final k in baseKeys) k: _extractPlaceholders(parsed[baseLocale]![k]?.toString() ?? ''),
+    for (final k in baseKeys)
+      k: _extractPlaceholders(parsed[baseLocale]![k]?.toString() ?? ''),
   };
 
   // 2-4. Сверка каждой локали с базой
@@ -78,7 +85,9 @@ void main(List<String> args) {
       hasErrors = true;
     }
     if (extra.isNotEmpty) {
-      print('⚠️  $locale: лишние ключи (отсутствуют в базовой локали "$baseLocale"): ${extra.join(", ")}');
+      print(
+        '⚠️  $locale: лишние ключи (отсутствуют в базовой локали "$baseLocale"): ${extra.join(", ")}',
+      );
     }
 
     for (final key in keys.intersection(baseKeys)) {
@@ -95,13 +104,17 @@ void main(List<String> args) {
       final placeholders = _extractPlaceholders(value);
       final expected = basePlaceholders[key] ?? {};
       if (!_setEquals(placeholders, expected)) {
-        print('❌ $locale/$key: плейсхолдеры не совпадают с базой '
-            '(ожидались: ${expected.join(", ")}; получены: ${placeholders.join(", ")})');
+        print(
+          '❌ $locale/$key: плейсхолдеры не совпадают с базой '
+          '(ожидались: ${expected.join(", ")}; получены: ${placeholders.join(", ")})',
+        );
         hasErrors = true;
       }
 
       if (_containsForbiddenHtml(value)) {
-        print('❌ $locale/$key: найдены HTML/script-теги в переводе — потенциальный injection');
+        print(
+          '❌ $locale/$key: найдены HTML/script-теги в переводе — потенциальный injection',
+        );
         hasErrors = true;
       }
     }
@@ -138,6 +151,8 @@ bool _setEquals(Set<String> a, Set<String> b) =>
 
 /// Простая эвристика: ищем угловые скобки с похожим на тег содержимым.
 bool _containsForbiddenHtml(String value) {
-  return RegExp(r'<\s*(script|iframe|img|a|div|span|style)\b', caseSensitive: false)
-      .hasMatch(value);
+  return RegExp(
+    r'<\s*(script|iframe|img|a|div|span|style)\b',
+    caseSensitive: false,
+  ).hasMatch(value);
 }

@@ -1,0 +1,11 @@
+{
+  "@@locale": "en",
+  "welcomeMessage": "Welcome!",
+  "@welcomeMessage": {
+    "description": "Приветствие на главном экране"
+  },
+  "user": "User one",
+  "@user": {
+    "description": "тест на юзера"
+  }
+}

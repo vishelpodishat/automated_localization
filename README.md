@@ -2,6 +2,37 @@
 
 A new Flutter project.
 
+## Publish localizations
+
+Translations are published through GitHub Actions:
+
+```text
+Google Sheet
+-> GitHub Actions
+-> sheety_localization
+-> ARB validation
+-> flutter analyze / flutter test
+-> GitHub production approval
+-> Shorebird Android patch
+```
+
+Required GitHub repository secrets:
+
+```text
+GOOGLE_SERVICE_ACCOUNT_JSON
+LOCALIZATION_SHEET_ID
+SHOREBIRD_TOKEN
+```
+
+Before the first production patch, run `shorebird init`, commit `shorebird.yaml`,
+and replace debug Android signing with production signing/secrets.
+Configure the GitHub `production` environment with required reviewers.
+
+Run it from GitHub Actions with the `Publish localizations` workflow. The
+workflow generates localization files from Google Sheet, uploads the generated
+diff as an artifact, waits for the `production` environment approval, and then
+publishes a Shorebird Android patch.
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
